@@ -14,6 +14,7 @@ const Home = ({ onContinue }) => {
                 Ascend
             </h1>
             <p
+                className="continue-button"
                 onClick={onContinue}
                 style={{
                     cursor: "pointer",

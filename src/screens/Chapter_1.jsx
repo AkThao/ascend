@@ -3,7 +3,14 @@ import React, { useState, useEffect } from "react";
 const Chapter1 = () => {
     const allStorylines = [
         "I’ve been here as long as I can remember",
-        "In fact, this is all I’ve ever known, all any of us have ever known"
+        "In fact, this is all I’ve ever known, all any of us have ever known",
+        "I live in a dark, yet serene kingdom called the Underworld",
+        "I like it here, but growing up I heard many a tale of a sought-after land far above ours",
+        "They call it the Skyworld",
+        "Why they call it that I have no idea",
+        "What I do know is that it is a magical land where light is everywhere, all the time",
+        "I can't imagine what that's like",
+        "Here we have to create our own light"
     ];
     const [currStorylines, setCurrStorylines] = useState([]); // Stores lines currently displayed on screen
     const [typing, setTyping] = useState(false); // Pauses interaction during typewriter effect
@@ -31,7 +38,9 @@ const Chapter1 = () => {
     useEffect(() => {
         if (typing && currLineText.length < allStorylines[currLineIdx].length) {
             const timeout = setTimeout(() => {
-                setCurrLineText(allStorylines[currLineIdx].slice(0, currLineText.length + 1));
+                setCurrLineText(
+                    allStorylines[currLineIdx].slice(0, currLineText.length + 1)
+                );
             }, 50);
 
             return () => clearTimeout(timeout);
@@ -55,7 +64,7 @@ const Chapter1 = () => {
                     justifyContent: "center",
                     flexDirection: "column",
                     fontFamily: "monospace",
-                    userSelect: "none",
+                    userSelect: "none"
                 }}
             >
                 <h1>Chapter 1: Look to the Sky</h1>
