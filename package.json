@@ -2,7 +2,7 @@
   "name": "ascend",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://AkThao.github.io/ascend",
+  "homepage": "https://akthao.github.io/ascend",
   "type": "module",
   "scripts": {
     "predeploy": "npm run build",
