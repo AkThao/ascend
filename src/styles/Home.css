@@ -1,0 +1,9 @@
+p {
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+p:hover {
+    background-color: #444;
+}

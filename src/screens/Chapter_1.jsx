@@ -55,7 +55,7 @@ const Chapter1 = () => {
                     justifyContent: "center",
                     flexDirection: "column",
                     fontFamily: "monospace",
-                    userSelect: "none"
+                    userSelect: "none",
                 }}
             >
                 <h1>Chapter 1: Look to the Sky</h1>
