@@ -10,7 +10,7 @@ const Chapter1 = () => {
         "Why they call it that I have no idea",
         "What I do know is that it is a magical land where light is everywhere, all the time",
         "I can't imagine what that's like",
-        "Here we have to create our own light"
+        "Here we have to create our own light, and it's not always abundant"
     ];
     const [currStorylines, setCurrStorylines] = useState([]); // Stores lines currently displayed on screen
     const [typing, setTyping] = useState(false); // Pauses interaction during typewriter effect
@@ -35,7 +35,26 @@ const Chapter1 = () => {
         }
     };
 
+    const handleSkip = () => {
+        if (typing) {
+            setTyping(false);
+            setCurrLineText("");
+            setCurrLineIdx(allStorylines.length);
+            setCurrStorylines([...allStorylines]);
+        } else {
+            setTyping(false);
+            setCurrLineText("");
+            setCurrLineIdx(allStorylines.length);
+            setCurrStorylines([...allStorylines]);
+        }
+    };
+
     useEffect(() => {
+        // If not typing, don't bother running animation
+        if (!typing) {
+            return
+        };
+
         if (typing && currLineText.length < allStorylines[currLineIdx].length) {
             const timeout = setTimeout(() => {
                 setCurrLineText(
@@ -58,10 +77,11 @@ const Chapter1 = () => {
             <div
                 onClick={handleNextLine}
                 style={{
-                    height: "100vh",
+                    height: "calc(100vh - 40px)",
                     width: "100vw",
                     display: "flex",
                     justifyContent: "center",
+                    alignItems: "center",
                     flexDirection: "column",
                     fontFamily: "monospace",
                     userSelect: "none"
@@ -73,6 +93,16 @@ const Chapter1 = () => {
                 ))}
                 {typing && <p>{currLineText}</p>}
             </div>
+            <button
+                onClick={handleSkip}
+                style={{
+                    width: "150px",
+                    position: "absolute",
+                    bottom: "20px"
+                }}
+            >
+                Skip
+            </button>
         </>
     );
 };
