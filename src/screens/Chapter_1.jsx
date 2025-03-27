@@ -100,7 +100,7 @@ const Chapter1 = () => {
         <div
             style={{
                 boxSizing: "border-box",
-                height: "100vh",
+                minHeight: "100vh",
                 width: "100vw",
                 padding: "20px 20px",
                 display: "flex",
@@ -132,6 +132,7 @@ const Chapter1 = () => {
                 onClick={handleNextLine}
                 style={{
                     display: "flex",
+                    flexGrow: 1,
                     justifyContent: "center",
                     alignItems: "center",
                     flexDirection: "column",
