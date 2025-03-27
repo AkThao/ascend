@@ -10,15 +10,27 @@ const Chapter1 = () => {
         "Why they call it that I have no idea",
         "What I do know is that it is a magical land where light is everywhere, all the time",
         "I can't imagine what that's like",
-        "Here we have to create our own light, and it's not always abundant"
+        "Here we have to create our own light, and it's not always abundant",
+        "Speaking of which, I should probably have a look around..."
     ];
+    // Story-management
     const [currStorylines, setCurrStorylines] = useState([]); // Stores lines currently displayed on screen
-    const [typing, setTyping] = useState(false); // Pauses interaction during typewriter effect
+    const [isTyping, setIsTyping] = useState(false); // Pauses interaction during typewriter effect
     const [currLineIdx, setCurrLineIdx] = useState(0); // Tracks line currently being typed
     const [currLineText, setCurrLineText] = useState(""); // Holds text being typed on current line
 
+    // Stats
+    const [showStats, setShowStats] = useState(false);
+    const [lightLevel, setLightLevel] = useState(0);
+    const [isPlayerTorchLit, setIsPlayerTorchLit] = useState(false);
+
     const handleNextLine = () => {
-        if (typing || currLineIdx >= allStorylines.length) {
+        if (currLineIdx >= allStorylines.length) {
+            setShowStats(true);
+            return;
+        }
+
+        if (isTyping || currLineIdx >= allStorylines.length) {
             // Don't do anything if line is being typed out or end of text is reached
             return;
         }
@@ -30,32 +42,44 @@ const Chapter1 = () => {
             setCurrLineIdx(currLineIdx + 1);
         } else {
             // Start typing next line
-            setTyping(true);
+            setIsTyping(true);
             setCurrLineText("");
         }
     };
 
     const handleSkip = () => {
-        if (typing) {
-            setTyping(false);
+        if (isTyping) {
+            setIsTyping(false);
             setCurrLineText("");
             setCurrLineIdx(allStorylines.length);
             setCurrStorylines([...allStorylines]);
         } else {
-            setTyping(false);
+            setIsTyping(false);
             setCurrLineText("");
             setCurrLineIdx(allStorylines.length);
             setCurrStorylines([...allStorylines]);
+        }
+
+        setShowStats(true);
+    };
+
+    const handleLightTorch = () => {
+        if (isPlayerTorchLit === false) {
+            setLightLevel((lightLevel) => lightLevel + 1);
+            setIsPlayerTorchLit(true);
         }
     };
 
     useEffect(() => {
         // If not typing, don't bother running animation
-        if (!typing) {
-            return
-        };
+        if (!isTyping) {
+            return;
+        }
 
-        if (typing && currLineText.length < allStorylines[currLineIdx].length) {
+        if (
+            isTyping &&
+            currLineText.length < allStorylines[currLineIdx].length
+        ) {
             const timeout = setTimeout(() => {
                 setCurrLineText(
                     allStorylines[currLineIdx].slice(0, currLineText.length + 1)
@@ -63,47 +87,74 @@ const Chapter1 = () => {
             }, 50);
 
             return () => clearTimeout(timeout);
-        } else if (typing) {
+        } else if (isTyping) {
             // Finished typing
-            setTyping(false);
+            setIsTyping(false);
             setCurrLineText("");
             setCurrStorylines([...currStorylines, allStorylines[currLineIdx]]);
             setCurrLineIdx(currLineIdx + 1);
         }
-    }, [typing, currLineText, currLineIdx, allStorylines]);
+    }, [isTyping, currLineText, currLineIdx, allStorylines]);
 
     return (
-        <>
+        <div
+            style={{
+                boxSizing: "border-box",
+                height: "100vh",
+                width: "100vw",
+                padding: "20px 20px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                alignItems: "center"
+            }}
+        >
+            {showStats && (
+                <div
+                    style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "space-between"
+                    }}
+                >
+                    <div
+                        style={{
+                            textAlign: "left"
+                        }}
+                    >
+                        Light level: {lightLevel}
+                    </div>
+                    <button onClick={handleLightTorch}>Light torch</button>
+                    {/* Have a timer bar below this */}
+                </div>
+            )}
             <div
                 onClick={handleNextLine}
                 style={{
-                    height: "calc(100vh - 40px)",
-                    width: "100vw",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
                     flexDirection: "column",
                     fontFamily: "monospace",
-                    userSelect: "none"
+                    userSelect: "none",
+                    height: "100%"
                 }}
             >
                 <h1>Chapter 1: Look to the Sky</h1>
                 {currStorylines.map((line, idx) => (
                     <p key={idx}>{line}</p>
                 ))}
-                {typing && <p>{currLineText}</p>}
+                {isTyping && <p>{currLineText}</p>}
             </div>
             <button
                 onClick={handleSkip}
                 style={{
-                    width: "150px",
-                    position: "absolute",
-                    bottom: "20px"
+                    width: "150px"
                 }}
             >
                 Skip
             </button>
-        </>
+        </div>
     );
 };
 
